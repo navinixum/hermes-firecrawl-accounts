@@ -66,6 +66,9 @@ def t_scrape(args):
             "onlyMainContent": args.get("only_main_content", True)}
     if args.get("wait_for"):
         body["waitFor"] = int(args["wait_for"])
+    if args.get("max_age") is not None:
+        # 0 = always fetch fresh (Firecrawl v2 otherwise may serve a cached copy up to 2 days old)
+        body["maxAge"] = max(0, int(args["max_age"]))
     res, _, label = core.call("POST", "/scrape", body)
     d = res.get("data") or {}
     out = {"account": label, "url": url, "metadata": {
@@ -170,7 +173,9 @@ TOOLS = [
          "formats": {"type": "array", "items": {"type": "string",
                      "enum": ["markdown", "summary", "html", "links"]}},
          "only_main_content": {"type": "boolean", "default": True},
-         "wait_for": {"type": "integer", "description": "мс ожидания JS-рендера"}}, ["url"])),
+         "wait_for": {"type": "integer", "description": "мс ожидания JS-рендера"},
+         "max_age": {"type": "integer", "description": "Макс. возраст кеша Firecrawl в мс. 0 = всегда свежая загрузка "
+                     "(по умолчанию Firecrawl может отдать кеш до 2 дней)."}}, ["url"])),
     ("firecrawl_search", t_search, S(
         "firecrawl_search",
         "Веб-поиск через Firecrawl (выбранный пользователем аккаунт). scrape_results=true добавит текст страниц.",
