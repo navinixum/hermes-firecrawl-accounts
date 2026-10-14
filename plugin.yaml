@@ -1,0 +1,12 @@
+name: firecrawl-accounts
+version: 1.0.0
+description: "Firecrawl (scrape/search/map/crawl) с ручным переключателем аккаунтов. Аккаунт выбирает только пользователь; без авто-ротации."
+author: navinixum
+license: MIT
+provides_tools:
+  - firecrawl_account_status
+  - firecrawl_scrape
+  - firecrawl_search
+  - firecrawl_map
+  - firecrawl_crawl
+  - firecrawl_crawl_status
